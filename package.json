@@ -1,0 +1,14 @@
+{
+  "name": "LiveCall",
+  "version": "0.0.1",
+  "description": "live call",
+  "cordova": {
+    "id": "chat1v1.chatcall",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "keywords": [],
+  "author": "bobo",
+  "license": "MIT"
+}
