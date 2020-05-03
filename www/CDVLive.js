@@ -69,11 +69,6 @@ CDVLive.prototype.switchView = function (success, fail, params) {
     exec(success, fail, 'CDVLive', 'switchView', [params])
 };
 
-// 金币不足，距离挂断的倒计时  参数 duration 倒计时时间 （例如60秒倒计时传60）
-CDVLive.prototype.goldNoTimer = function (success, fail, params) {
-    exec(success, fail, 'CDVLive', 'goldNoTimer', [params])
-};
-
 // 设置远程音频静音，打开聊天时默认非静音 参数 mute 值为1 静音，0 非静音
 CDVLive.prototype.muteRemoteAudio = function (success, fail, params) {
     exec(success, fail, 'CDVLive', 'muteRemoteAudio', [params])
