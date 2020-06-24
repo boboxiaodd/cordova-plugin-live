@@ -7,10 +7,10 @@
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="CDVLive">
-                <param name="android-package" value="cordova.plugin.cdvlive" />
+                <param name="android-package" value="cordova.plugin.live" />
             </feature>
         </config-file>
-        <source-file src="src/android/CDVLive.java" target-dir="src/cordova/plugin/cdvlive"/>
+        <source-file src="src/android/CDVLive.java" target-dir="src/cordova/plugin/live"/>
     </platform>
     <platform name="ios">
         <config-file parent="/*" target="config.xml">
