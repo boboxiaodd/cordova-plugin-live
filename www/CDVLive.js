@@ -1,90 +1,171 @@
-var exec = require('cordova/exec');
+cordova.define("cordova-plugin-live.CDVLive", function(require, exports, module) {
+    'use strict';
+    var exec = require('cordova/exec');
 
-function CDVLive() {
+    function CDVLive() {
 
-}
+    }
 
-// 检查客户端音视频权限，成功回调success，失败回调fail
-// 参数：type:1 视频，2 音频
-CDVLive.prototype.checkAuth = function (success, fail, params) {
-    exec(success, fail, 'CDVLive', 'checkAuth', [params])
-};
 
-// 接听者在收到通话邀请后，接听或拒绝前，需要调用该方法播放铃声
-// 点击接听后，startCall 方法内部会主动关闭铃声
-// 点击拒绝后，需要调用 stopAudio 方法关闭铃声
-// 注意，需要在通话页面退出的时候或退出登录的时候主动调用关闭铃声的方法。避免在离开通话界面时用户没机会点击拒绝关闭铃声
-// 参数：无
-CDVLive.prototype.playAudio = function (success, fail, params) {
-    exec(success, fail, 'CDVLive', 'playAudio', [params])
-};
+/*
+    即构初始化
+    params = {
+        appid: //即构appid,
+        sign: //即构appSignature,
+        env: //是否为开发环境,
+    }
+*/
+    CDVLive.prototype.init = function(success,fail,params){
+        exec(success, fail, 'CDVLive', 'init', [params]);
+    }
 
-// 接听者拒绝通话后，调用该方法关闭铃音
-CDVLive.prototype.stopAudio = function (success, fail, params) {
-    exec(success, fail, 'ChatCall', 'stopAudio', [params]);
-};
 
-// 唤起视频通话界面：
-// 1. 发起者创建房间成功后，调用该方法进入房间，并显示本地画面，等待对方接受邀请
-// 2. 接收者点击接听按钮后，调用该方法进入房间，并显示本地画面，等待对方画面到来
-// 参数：
-// app_id：声网 APPID
-// token：进入房间的 token
-// room_id：房间号
+    CDVLive.prototype.playSVGA = function(success,params){
+    	exec(success,null,'CDVLive','playSVGA',[params]);
+    }
 
-// call_type：通话类型，1 视频，2音频
-// start_uid：通话发起者 UID
-// receive_uid：通话接听者 UID
-// self_uid：当前客户端登录用户 UID
+    CDVLive.prototype.stopSVGA = function(){
+    	exec(null,null,'CDVLive','stopSVGA',[]);
+    }
 
-// screen_interval（秒）：截屏时间间隔，值为0时客户端不截屏，该字段缺省时客户端默认60秒间隔
-// heart_interval：心跳间隔，该字段缺省时客户端默认30秒间隔
 
-// 注意：调用该方法前需要根据通话类型，调用 checkAuth 方法申请权限
-CDVLive.prototype.startCall = function (success, fail, params) {
-    exec(success, fail, 'CDVLive', 'startCall', [params]);
-};
 
-// 调用该方法关闭通话SDK
-// 参数：无
-CDVLive.prototype.stopCall = function (success, fail, params) {
-    exec(success, fail, 'CDVLive', 'stopCall', [params]);
-};
+/*
+    打开本地预览，用于直播前调整美颜
+*/
+    CDVLive.prototype.startPreview = function(){
+        exec(null, null, 'CDVLive', 'startPreview', []);
+    }    
 
-// 调用该方法切换前后摄像头，音频通话时，调用该方法无效
-// 参数：无
-CDVLive.prototype.switchCamera = function (success, fail, params) {
-    exec(success, fail, 'CDVLive', 'switchCamera', [params]);
-};
+/*
+    关闭本地预览，用于直播前调整美颜
+*/
+    CDVLive.prototype.stopPreview = function(success){
+        exec(success, null, 'CDVLive', 'stopPreview', []);
+    }
 
-// 调用该方法设置美颜参数，音频通话时，调用该方法无效
-// 参数：无
-// android 参数 beauty 范围（0-1）
-CDVLive.prototype.setterBeauty = function (success, fail, params) {
-    exec(success, fail, 'CDVLive', 'setterBeauty', [params]);
-};
 
-// android 切换显示的view 参数无
-CDVLive.prototype.switchView = function (success, fail, params) {
-    exec(success, fail, 'CDVLive', 'switchView', [params])
-};
+/*
+跳转到APP设置页面，用于提示用户开启某些权限
+*/    
+    CDVLive.prototype.goSetting = function(){
+        exec(null, null, 'CDVLive', 'goSetting', []);
+    }
 
-// 设置远程音频静音，打开聊天时默认非静音 参数 mute 值为1 静音，0 非静音
-CDVLive.prototype.muteRemoteAudio = function (success, fail, params) {
-    exec(success, fail, 'CDVLive', 'muteRemoteAudio', [params])
-};
+    CDVLive.prototype.goURL = function(success,params){
+        exec(success, null, 'CDVLive', 'goURL', [params]);
+    }
+/*
+播放系统的振动声音
+*/    
+    CDVLive.prototype.playBeep = function(){
+        exec(null, null, 'CDVLive', 'playBeep', []);
+    }
 
-// 注册客户端状态变更回调方法
-// 参数: eventID 参照 src/ios/AVCallDefines.h 文件定义的枚举：AVCallStatusCode
-CDVLive.prototype.onCallEvent = function (eventID, params) {
-    cordova.fireDocumentEvent('CDVLive.onCallEvent', {
-        eventID: eventID,
-        params: params
-    })
-};
 
-if (!window.CDVLive) {
-    window.CDVLive = new CDVLive();
-}
+/*
+加入房间
+                params = {
+                        "userID": //用户ID,
+                        "roomID": //房间ID,
+                        "userName": //用户名,
+                        "is_actor": //是否为主播,
+                        "liveRoomStreamID": //主播流ID,
+                        "pkStreamID": //PK流ID
+                        "connectStreamIDList":[], //连麦流ID列表
+                    }
+*/    
+    CDVLive.prototype.joinRoom = function (success, fail, params) {
+        exec(success, fail, 'CDVLive', 'joinRoom', [params]);
+    };
 
-module.exports = new CDVLive();
+
+/*
+离开房间
+*/
+    CDVLive.prototype.exitRoom = function (success) {
+        exec(success, null, 'CDVLive', 'exitRoom', []);
+    };
+
+
+/*
+开始推连麦流
+*/
+    CDVLive.prototype.startConnect = function (success,params) {
+        exec(success, null, 'CDVLive', 'startConnect', [params]);
+    };
+
+/*
+是否静音麦克风
+*/
+  CDVLive.prototype.muteMicphone = function (params) {
+        exec(null, null, 'CDVLive', 'muteMicphone', [params]);
+    };
+
+      
+/*
+结束推连麦流
+*/
+    CDVLive.prototype.stopConnect = function () {
+        exec(null, null, 'CDVLive', 'stopConnect', []);
+    };
+
+/*
+交换前后摄像头
+*/
+    CDVLive.prototype.switchCamera = function (success, fail, params) {
+        exec(success, fail, 'CDVLive', 'switchCamera', [params]);
+    };
+
+
+/*
+打开美颜调整界面
+*/
+    CDVLive.prototype.openBeauty = function () {
+        exec(null, null, 'CDVLive', 'openBeauty', []);
+    };
+/*
+关闭美颜界面
+*/
+    CDVLive.prototype.closeBeauty = function () {
+        exec(null, null, 'CDVLive', 'closeBeauty', []);
+    };
+
+
+
+/*
+开始PK界面
+param = {
+        pkStreamID: //PK流ID
+    }
+*/
+    CDVLive.prototype.startPK = function (params) {
+        exec(null, null, 'CDVLive', 'startPK', [params]);
+    };
+
+/*
+结束PK
+*/
+    CDVLive.prototype.stopPK = function () {
+        exec(null, null, 'CDVLive', 'stopPK', []);
+    };
+
+
+ /*
+ 显示直播间输入框
+ params= {
+        placeholder:'输入聊天内容'
+    }
+ */   
+    CDVLive.prototype.showLiveInputbar = function (params) {
+        exec(null, null, 'CDVLive', 'showLiveInputbar', [params]);
+    };    
+
+
+    if (!window.CDVLive) {
+        window.CDVLive = new CDVLive();
+    }
+
+    module.exports = new CDVLive();
+
+});
