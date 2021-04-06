@@ -16,6 +16,7 @@
         <config-file parent="/*" target="config.xml">
             <feature name="CDVLive">
                 <param name="ios-package" value="CDVLive" />
+                <param name="onload" value="true" />
             </feature>
         </config-file>
 
