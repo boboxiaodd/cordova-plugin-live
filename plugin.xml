@@ -2,7 +2,7 @@
 <plugin id="cordova-plugin-live" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0">
     <name>CDVLive</name>
     <js-module name="CDVLive" src="www/CDVLive.js">
-        <clobbers target="cordova.plugins.live" />
+        <clobbers target="CDVLive" />
     </js-module>
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
