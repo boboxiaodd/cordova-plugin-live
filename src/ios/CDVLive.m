@@ -8,7 +8,12 @@
 @end
 
 @implementation CDVLive
-
+    
+- (void)pluginInitialize
+{
+    
+}
+    
 - (void)getIsDebug:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* pluginResult = nil;
